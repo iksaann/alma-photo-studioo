@@ -15,7 +15,9 @@
   const sections = document.querySelectorAll('section[id]');
   const bookingForm = document.getElementById('booking');
   const bookingStatus = document.getElementById('booking-status');
+  const instagramLink = document.getElementById('instagram-link');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const siteConfig = window.ALMA_PHOTO_CONFIG || {};
 
   /* ── Page Load ── */
 
@@ -171,6 +173,34 @@
     });
   }
 
+  /* ── Project Config Links ── */
+
+  if (instagramLink && siteConfig.instagramUrl) {
+    instagramLink.href = siteConfig.instagramUrl;
+  }
+
+  /* ── FAQ Accordion ── */
+
+  const faqQuestions = document.querySelectorAll('.faq-question');
+
+  faqQuestions.forEach((question) => {
+    question.addEventListener('click', () => {
+      const answerId = question.getAttribute('aria-controls');
+      const answer = answerId ? document.getElementById(answerId) : null;
+      const shouldOpen = question.getAttribute('aria-expanded') !== 'true';
+
+      faqQuestions.forEach((otherQuestion) => {
+        const otherAnswerId = otherQuestion.getAttribute('aria-controls');
+        const otherAnswer = otherAnswerId ? document.getElementById(otherAnswerId) : null;
+        otherQuestion.setAttribute('aria-expanded', 'false');
+        if (otherAnswer) otherAnswer.hidden = true;
+      });
+
+      question.setAttribute('aria-expanded', String(shouldOpen));
+      if (answer) answer.hidden = !shouldOpen;
+    });
+  });
+
   /* ── Portfolio Touch / Hover ── */
 
   const portfolioItems = document.querySelectorAll('.portfolio-item');
@@ -179,6 +209,118 @@
     item.addEventListener('touchstart', () => {
       item.classList.add('is-touch');
     }, { passive: true });
+  });
+
+  /* ── Portfolio Modal Gallery ── */
+
+  const portfolioModal = document.getElementById('portfolio-modal');
+  const modalImage = document.getElementById('portfolio-modal-image');
+  const modalTitle = document.getElementById('portfolio-modal-title');
+  const modalCaption = document.getElementById('portfolio-modal-caption');
+  const modalClose = portfolioModal ? portfolioModal.querySelector('.portfolio-modal__close') : null;
+  const modalPrev = portfolioModal ? portfolioModal.querySelector('.portfolio-modal__nav--prev') : null;
+  const modalNext = portfolioModal ? portfolioModal.querySelector('.portfolio-modal__nav--next') : null;
+  let activePortfolioIndex = 0;
+  let lastFocusedElement = null;
+  let previousBodyOverflow = '';
+
+  const portfolioGallery = Array.from(portfolioItems).map((item) => {
+    const image = item.querySelector('img');
+    const category = item.querySelector('figcaption span');
+    const caption = item.querySelector('figcaption em');
+
+    return {
+      item,
+      src: image ? image.currentSrc || image.src : '',
+      alt: image ? image.alt : '',
+      title: category ? category.textContent.trim() : 'Портфолио',
+      caption: caption ? caption.textContent.trim() : '',
+    };
+  });
+
+  function renderPortfolioModal(index) {
+    const galleryItem = portfolioGallery[index];
+    if (!galleryItem || !modalImage || !modalTitle || !modalCaption) return;
+
+    activePortfolioIndex = index;
+    modalImage.src = galleryItem.src;
+    modalImage.alt = galleryItem.alt;
+    modalTitle.textContent = galleryItem.title;
+    modalCaption.textContent = galleryItem.caption;
+  }
+
+  function openPortfolioModal(index) {
+    if (!portfolioModal || !portfolioGallery.length) return;
+
+    lastFocusedElement = document.activeElement;
+    previousBodyOverflow = document.body.style.overflow;
+    renderPortfolioModal(index);
+    portfolioModal.classList.add('is-open');
+    portfolioModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (modalClose) modalClose.focus();
+  }
+
+  function closePortfolioModal() {
+    if (!portfolioModal || !portfolioModal.classList.contains('is-open')) return;
+
+    portfolioModal.classList.remove('is-open');
+    portfolioModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = previousBodyOverflow;
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+      lastFocusedElement.focus();
+    }
+  }
+
+  function showAdjacentPortfolio(direction) {
+    const nextIndex = (activePortfolioIndex + direction + portfolioGallery.length) % portfolioGallery.length;
+    renderPortfolioModal(nextIndex);
+  }
+
+  portfolioGallery.forEach(({ item }, index) => {
+    item.addEventListener('click', () => openPortfolioModal(index));
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openPortfolioModal(index);
+      }
+    });
+  });
+
+  if (modalClose) {
+    modalClose.addEventListener('click', closePortfolioModal);
+  }
+
+  if (modalPrev) {
+    modalPrev.addEventListener('click', () => showAdjacentPortfolio(-1));
+  }
+
+  if (modalNext) {
+    modalNext.addEventListener('click', () => showAdjacentPortfolio(1));
+  }
+
+  if (portfolioModal) {
+    portfolioModal.addEventListener('click', (e) => {
+      if (e.target === portfolioModal) {
+        closePortfolioModal();
+      }
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (!portfolioModal || !portfolioModal.classList.contains('is-open')) return;
+
+    if (e.key === 'Escape') {
+      closePortfolioModal();
+    }
+
+    if (e.key === 'ArrowLeft') {
+      showAdjacentPortfolio(-1);
+    }
+
+    if (e.key === 'ArrowRight') {
+      showAdjacentPortfolio(1);
+    }
   });
 
   /* ── Button Micro-interaction ── */
