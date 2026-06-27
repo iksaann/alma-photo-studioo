@@ -47,9 +47,11 @@
         </ul>
 
         <a
-          href="https://wa.me/77000000000"
+          href="#"
           target="_blank"
           rel="noopener noreferrer"
+          data-whatsapp-link
+          data-whatsapp-context="general"
           class="hidden md:inline-flex btn-primary !py-3 !px-6 !text-[0.6875rem]"
         >
           Записаться
@@ -78,9 +80,11 @@
           <li><a href="#contact" class="mobile-nav-link block py-1">Контакты</a></li>
           <li class="pt-6">
             <a
-              href="https://wa.me/77000000000"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
+              data-whatsapp-link
+              data-whatsapp-context="general"
               class="btn-primary w-full"
             >
               Написать в WhatsApp
@@ -112,7 +116,7 @@
               </h1>
 
               <p class="reveal reveal-delay-2 hero-subtitle mb-10 lg:mb-12">
-                Я&nbsp;Айдана, фотограф из&nbsp;Алматы. Снимаю портреты, семьи и&nbsp;контент для малого бизнеса: помогаю с&nbsp;идеей, образом, локацией и&nbsp;позированием, чтобы съёмка прошла спокойно и&nbsp;результат выглядел дорого.
+                Я&nbsp;<span data-photographer-name>Айдана</span>, фотограф из&nbsp;Алматы. Снимаю портреты, семьи и&nbsp;контент для малого бизнеса: помогаю с&nbsp;идеей, образом, локацией и&nbsp;позированием, чтобы съёмка прошла спокойно и&nbsp;результат выглядел дорого.
               </p>
 
               <div class="reveal reveal-delay-3 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
@@ -225,7 +229,7 @@
           </div>
           <div class="reveal reveal-delay-3 about-panel">
             <p>
-              Меня зовут Айдана. Я&nbsp;снимаю в&nbsp;студиях Алматы, на&nbsp;улицах старого центра, в&nbsp;горах и&nbsp;у&nbsp;клиентов на&nbsp;локациях. В&nbsp;работе соединяю мягкий свет, спокойную режиссуру и&nbsp;коммерческий подход: кадры должны быть красивыми, понятными и&nbsp;готовыми к&nbsp;использованию.
+              Меня зовут <span data-photographer-name>Айдана</span>. Я&nbsp;снимаю в&nbsp;студиях Алматы, на&nbsp;улицах старого центра, в&nbsp;горах и&nbsp;у&nbsp;клиентов на&nbsp;локациях. В&nbsp;работе соединяю мягкий свет, спокойную режиссуру и&nbsp;коммерческий подход: кадры должны быть красивыми, понятными и&nbsp;готовыми к&nbsp;использованию.
             </p>
             <ul class="about-list" aria-label="Как проходит работа">
               <li>бриф и moodboard до съёмки;</li>
@@ -234,6 +238,9 @@
               <li>закрытая онлайн-галерея для выбора кадров.</li>
             </ul>
           </div>
+          <figure class="reveal reveal-delay-4 about-photo" data-about-image hidden>
+            <img src="" alt="" data-about-image-src loading="lazy" decoding="async">
+          </figure>
         </div>
       </section>
 
@@ -335,37 +342,49 @@
               <p class="pricing-kicker">Портрет</p>
               <h3>Light</h3>
               <p class="pricing-price">45 000 ₸</p>
+              <div class="pricing-meta">
+                <p><span>Кому подходит:</span> портрет, профиль, резюме или личный бренд.</p>
+                <p><span>Дополнительно оплачивается:</span> студия и визажист.</p>
+              </div>
               <ul>
                 <li>1 час съёмки</li>
                 <li>10 фото в авторской ретуши</li>
                 <li>до 2 образов</li>
                 <li>готовность до 10 дней</li>
               </ul>
-              <a href="#booking" class="btn-secondary">Оставить заявку</a>
+              <a href="#booking" class="btn-secondary" data-package="Light">Оставить заявку</a>
             </article>
             <article class="reveal reveal-delay-1 pricing-card pricing-card--featured">
               <p class="pricing-kicker">Популярный</p>
               <h3>Story</h3>
               <p class="pricing-price">75 000 ₸</p>
+              <div class="pricing-meta">
+                <p><span>Кому подходит:</span> личная история, пара или контент.</p>
+                <p><span>Дополнительно оплачивается:</span> студия, визажист и сложный выезд.</p>
+              </div>
               <ul>
                 <li>1,5-2 часа съёмки</li>
                 <li>18 фото в авторской ретуши</li>
                 <li>персональный moodboard</li>
                 <li>первые 5 кадров за 72 часа</li>
               </ul>
-              <a href="#booking" class="btn-primary">Забронировать</a>
+              <a href="#booking" class="btn-primary" data-package="Story">Забронировать</a>
             </article>
             <article class="reveal reveal-delay-2 pricing-card">
               <p class="pricing-kicker">Бренд / семья</p>
               <h3>Full Day</h3>
               <p class="pricing-price">120 000 ₸</p>
+              <div class="pricing-meta">
+                <p><span>Кому подходит:</span> бренд, семья или серия контента.</p>
+                <p><span>Дополнительно оплачивается:</span> точная смета зависит от локаций и команды.</p>
+              </div>
               <ul>
                 <li>до 4 часов съёмки</li>
                 <li>35 фото в авторской ретуши</li>
                 <li>2-3 локации в Алматы</li>
                 <li>мини-серия для соцсетей</li>
               </ul>
-              <a href="#booking" class="btn-secondary">Обсудить проект</a>
+              <a href="#booking" class="btn-secondary" data-package="Full Day">Обсудить проект</a>
             </article>
           </div>
         </div>
@@ -427,17 +446,18 @@
             <div>
               <p class="reveal section-label mb-6">Портфолио</p>
               <h2 class="reveal reveal-delay-1 section-title text-[clamp(2.25rem,5vw,3.875rem)]">
-                Недавние съёмки
+                Примеры визуального направления
               </h2>
             </div>
             <p class="reveal reveal-delay-2 portfolio-intro">
-              Подборка реальных сценариев: студийный портрет, семейная прогулка, love story и&nbsp;контент для эксперта.
+              Визуальные референсы форматов съёмки. После добавления реальных работ изображения будут подключаться локально из&nbsp;папки проекта.
             </p>
           </div>
 
           <div class="portfolio-grid">
-            <figure class="reveal portfolio-item group" tabindex="0" role="button" aria-label="Открыть фотографию: женский портрет в студии">
+            <figure class="reveal portfolio-item group" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Открыть фотографию: женский портрет в студии">
               <span class="portfolio-index">01</span>
+              <!-- REPLACE WITH REAL CLIENT WORK -->
               <img
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800&h=1000&crop=faces"
                 srcset="
@@ -457,8 +477,9 @@
               </figcaption>
             </figure>
 
-            <figure class="reveal reveal-delay-1 portfolio-item group" tabindex="0" role="button" aria-label="Открыть фотографию: семейная съёмка на природе">
+            <figure class="reveal reveal-delay-1 portfolio-item group" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Открыть фотографию: семейная съёмка на природе">
               <span class="portfolio-index">02</span>
+              <!-- REPLACE WITH REAL CLIENT WORK -->
               <img
                 src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=800&h=640"
                 srcset="
@@ -478,16 +499,17 @@
               </figcaption>
             </figure>
 
-            <figure class="reveal reveal-delay-2 portfolio-item group" tabindex="0" role="button" aria-label="Открыть фотографию: Love Story">
+            <figure class="reveal reveal-delay-2 portfolio-item group" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Открыть фотографию: Love Story">
               <span class="portfolio-index">03</span>
+              <!-- REPLACE WITH REAL CLIENT WORK -->
               <img
-                src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800&h=640"
+                src="https://images.unsplash.com/photo-1484876632310-ddb3b48133cc?auto=format&fit=crop&q=80&w=800&h=640"
                 srcset="
-                  https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=480&h=384 480w,
-                  https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800&h=640 800w,
-                  https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=1200&h=960 1200w"
+                  https://images.unsplash.com/photo-1484876632310-ddb3b48133cc?auto=format&fit=crop&q=80&w=480&h=384 480w,
+                  https://images.unsplash.com/photo-1484876632310-ddb3b48133cc?auto=format&fit=crop&q=80&w=800&h=640 800w,
+                  https://images.unsplash.com/photo-1484876632310-ddb3b48133cc?auto=format&fit=crop&q=80&w=1200&h=960 1200w"
                 sizes="(min-width: 1024px) 42vw, (min-width: 640px) 50vw, 100vw"
-                alt="Love Story — Alma Photo Studio"
+                alt="Love Story, пара держится за руки — Alma Photo Studio"
                 loading="lazy"
                 decoding="async"
                 width="800"
@@ -499,8 +521,9 @@
               </figcaption>
             </figure>
 
-            <figure class="reveal portfolio-item group" tabindex="0" role="button" aria-label="Открыть фотографию: персональный брендинг">
+            <figure class="reveal portfolio-item group" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Открыть фотографию: персональный брендинг">
               <span class="portfolio-index">04</span>
+              <!-- REPLACE WITH REAL CLIENT WORK -->
               <img
                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=600&crop=faces"
                 srcset="
@@ -520,14 +543,15 @@
               </figcaption>
             </figure>
 
-            <figure class="reveal reveal-delay-1 portfolio-item group" tabindex="0" role="button" aria-label="Открыть фотографию: портрет на природе">
+            <figure class="reveal reveal-delay-1 portfolio-item group" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Открыть фотографию: портрет на природе">
               <span class="portfolio-index">05</span>
+              <!-- REPLACE WITH REAL CLIENT WORK -->
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=600&crop=faces"
+                src="https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?auto=format&fit=crop&q=80&w=600&h=600&crop=faces"
                 srcset="
-                  https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400&h=400&crop=faces 400w,
-                  https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=600&crop=faces 600w,
-                  https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=900&h=900&crop=faces 900w"
+                  https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?auto=format&fit=crop&q=80&w=400&h=400&crop=faces 400w,
+                  https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?auto=format&fit=crop&q=80&w=600&h=600&crop=faces 600w,
+                  https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?auto=format&fit=crop&q=80&w=900&h=900&crop=faces 900w"
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 alt="Портрет на природе — Alma Photo Studio"
                 loading="lazy"
@@ -541,8 +565,9 @@
               </figcaption>
             </figure>
 
-            <figure class="reveal reveal-delay-2 portfolio-item portfolio-item--mono group" tabindex="0" role="button" aria-label="Открыть фотографию: минималистичный ч/б портрет">
+            <figure class="reveal reveal-delay-2 portfolio-item portfolio-item--mono group" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Открыть фотографию: минималистичный ч/б портрет">
               <span class="portfolio-index">06</span>
+              <!-- REPLACE WITH REAL CLIENT WORK -->
               <img
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=600&h=600&crop=faces"
                 srcset="
@@ -583,6 +608,7 @@
               href="#"
               target="_blank"
               rel="noopener noreferrer"
+              data-instagram-link
               class="btn-secondary"
             >
               Перейти в Instagram
@@ -597,34 +623,34 @@
           <div class="testimonials-header">
             <p class="reveal section-label mb-6">Отзывы клиентов</p>
             <h2 class="reveal reveal-delay-1 section-title text-[clamp(2.25rem,5vw,3.875rem)]">
-              Люди приходят за&nbsp;кадрами, а&nbsp;запоминают ощущение спокойствия
+              Что важно клиентам перед съёмкой
             </h2>
           </div>
           <div class="testimonials-grid">
             <figure class="reveal testimonial-card">
               <blockquote>
-                «Я&nbsp;очень переживала перед съёмкой, но&nbsp;Айдана всё объясняла простыми словами. В&nbsp;итоге получила портреты, которые не&nbsp;стыдно поставить и&nbsp;в&nbsp;LinkedIn, и&nbsp;на&nbsp;сайт».
+                «Хочу понимать, как подготовиться и&nbsp;что делать в&nbsp;кадре, особенно если это первая профессиональная съёмка».
               </blockquote>
               <figcaption>
-                <span>Мадина С.</span>
-                <em>портрет для личного бренда</em>
+                <span>Частый запрос</span>
+                <em>портрет и личный бренд</em>
               </figcaption>
             </figure>
             <figure class="reveal reveal-delay-1 testimonial-card">
               <blockquote>
-                «Семейная съёмка прошла легко, дети не&nbsp;устали, а&nbsp;фотографии получились тёплыми и&nbsp;настоящими. Особенно понравилось, что нам заранее помогли с&nbsp;одеждой».
+                «Важно, чтобы съёмка не&nbsp;превратилась в&nbsp;стресс для детей, а&nbsp;темп подходил всей семье».
               </blockquote>
               <figcaption>
-                <span>Семья Абдрахмановых</span>
-                <em>прогулочная съёмка</em>
+                <span>Частый запрос</span>
+                <em>семейная съёмка</em>
               </figcaption>
             </figure>
             <figure class="reveal reveal-delay-2 testimonial-card">
               <blockquote>
-                «Для кофейни нужна была серия кадров для запуска. Получили не&nbsp;просто красивые фото, а&nbsp;готовый визуал для меню, соцсетей и&nbsp;таргета».
+                «Нужна не&nbsp;просто красивая картинка, а&nbsp;серия кадров, которую можно сразу использовать в&nbsp;соцсетях и&nbsp;на&nbsp;сайте».
               </blockquote>
               <figcaption>
-                <span>Roast Corner</span>
+                <span>Частый запрос</span>
                 <em>контент для бизнеса</em>
               </figcaption>
             </figure>
@@ -649,7 +675,7 @@
                   <span aria-hidden="true"></span>
                 </button>
               </h3>
-              <div class="faq-answer" id="faq-answer-1" role="region" aria-labelledby="faq-question-1" hidden>
+              <div class="faq-answer" id="faq-answer-1" role="region" aria-labelledby="faq-question-1">
                 <p>Да, дата закрепляется после предоплаты 30%. Остаток оплачивается в&nbsp;день съёмки после завершения работы.</p>
               </div>
             </div>
@@ -660,7 +686,7 @@
                   <span aria-hidden="true"></span>
                 </button>
               </h3>
-              <div class="faq-answer" id="faq-answer-2" role="region" aria-labelledby="faq-question-2" hidden>
+              <div class="faq-answer" id="faq-answer-2" role="region" aria-labelledby="faq-question-2">
                 <p>В&nbsp;студиях Алматы, на&nbsp;улице, дома, в&nbsp;кофейнях, офисах, горах или на&nbsp;локации бренда. Локацию подбираем под задачу и&nbsp;сезон.</p>
               </div>
             </div>
@@ -671,7 +697,7 @@
                   <span aria-hidden="true"></span>
                 </button>
               </h3>
-              <div class="faq-answer" id="faq-answer-3" role="region" aria-labelledby="faq-question-3" hidden>
+              <div class="faq-answer" id="faq-answer-3" role="region" aria-labelledby="faq-question-3">
                 <p>Да. Я&nbsp;подсказываю движения, положение рук, взгляд и&nbsp;ракурсы, поэтому опыт съёмок не&nbsp;нужен.</p>
               </div>
             </div>
@@ -682,7 +708,7 @@
                   <span aria-hidden="true"></span>
                 </button>
               </h3>
-              <div class="faq-answer" id="faq-answer-4" role="region" aria-labelledby="faq-question-4" hidden>
+              <div class="faq-answer" id="faq-answer-4" role="region" aria-labelledby="faq-question-4">
                 <p>Первые кадры отправляю в&nbsp;течение 72&nbsp;часов, полная серия обычно готова за&nbsp;7-14 дней в&nbsp;зависимости от&nbsp;пакета.</p>
               </div>
             </div>
@@ -693,7 +719,7 @@
                   <span aria-hidden="true"></span>
                 </button>
               </h3>
-              <div class="faq-answer" id="faq-answer-5" role="region" aria-labelledby="faq-question-5" hidden>
+              <div class="faq-answer" id="faq-answer-5" role="region" aria-labelledby="faq-question-5">
                 <p>Да, один перенос возможен без доплаты, если предупредить минимум за&nbsp;48&nbsp;часов. Новую дату выбираем из&nbsp;ближайших свободных окон.</p>
               </div>
             </div>
@@ -710,32 +736,35 @@
               Расскажите, какую съёмку хотите
             </h2>
             <p class="reveal reveal-delay-2 contact-subtext font-light mb-10 leading-relaxed">
-              Заполните короткую форму — я&nbsp;отвечу в&nbsp;WhatsApp или Telegram, предложу свободные даты и&nbsp;подскажу подходящий пакет.
+              Заполните короткую форму — она подготовит сообщение для WhatsApp. Ваши данные не&nbsp;сохраняются на&nbsp;сайте.
             </p>
 
             <div class="reveal reveal-delay-3 mb-10">
-              <a href="tel:+77000000000" class="contact-phone inline-flex items-center gap-4">
+              <a href="#" class="contact-phone inline-flex items-center gap-4" data-phone-link>
               <svg class="w-5 h-5 opacity-40 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
               </svg>
-              +7 (700) 000-00-00
+              <span data-phone-display>Телефон</span>
               </a>
             </div>
 
             <div class="reveal reveal-delay-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <a
-                href="https://t.me/yourusername"
+                href="#"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-telegram-link
                 class="btn-secondary w-full sm:w-auto"
               >
                 Telegram
               </a>
 
               <a
-                href="https://wa.me/77000000000"
+                href="#"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-whatsapp-link
+                data-whatsapp-context="general"
                 class="btn-primary w-full sm:w-auto"
               >
                 WhatsApp
@@ -744,13 +773,14 @@
           </div>
 
           <form id="booking" class="reveal reveal-delay-2 booking-form" aria-label="Форма заявки на фотосессию">
+            <input type="hidden" name="package" id="selected-package">
             <div class="form-row">
               <label for="client-name">Имя</label>
               <input id="client-name" name="name" type="text" autocomplete="name" placeholder="Например, Алина" required>
             </div>
             <div class="form-row">
               <label for="client-contact">Телефон или Telegram</label>
-              <input id="client-contact" name="contact" type="text" autocomplete="tel" placeholder="+7 777 000 00 00" required>
+              <input id="client-contact" name="contact" type="text" placeholder="+7 777 123 45 67 или @username" required>
             </div>
             <div class="form-row">
               <label for="shoot-type">Формат съёмки</label>
@@ -762,6 +792,19 @@
                 <option>Контент для бизнеса</option>
               </select>
             </div>
+            <div class="form-row package-row">
+              <label for="package-select">Пакет</label>
+              <select id="package-select" name="package-select" aria-describedby="selected-package-note">
+                <option value="">Пока не выбран</option>
+                <option value="Light">Light</option>
+                <option value="Story">Story</option>
+                <option value="Full Day">Full Day</option>
+              </select>
+              <p class="form-note package-note" id="selected-package-note" hidden>
+                Вы выбрали пакет: <span data-selected-package-label></span>
+                <button type="button" class="package-clear" data-clear-package>убрать</button>
+              </p>
+            </div>
             <div class="form-row">
               <label for="client-message">Что важно учесть</label>
               <textarea id="client-message" name="message" rows="4" placeholder="Желаемая дата, локация, задача съёмки"></textarea>
@@ -770,6 +813,9 @@
             <p class="form-note" id="booking-status" role="status" aria-live="polite">
               Форма подготовит сообщение для WhatsApp. Ваши данные не&nbsp;сохраняются на&nbsp;сайте.
             </p>
+            <a href="#" class="form-email-link" data-email-link hidden>
+              Email: <span data-email-display></span>
+            </a>
           </form>
         </div>
       </section>
@@ -781,6 +827,7 @@
         <p>&copy; 2026 Alma Photo Studio. Все права защищены.</p>
         <p>Алматы, Казахстан</p>
       </div>
+      <p class="container-wide site-footer-credit">Демо-сайт для портфолио. Разработано Иксаном.</p>
     </footer>
 
   </div>

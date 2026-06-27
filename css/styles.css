@@ -52,17 +52,21 @@ textarea:focus-visible,
   outline-offset: 4px;
 }
 
-body.is-loading {
+html.js body.is-loading {
   overflow: hidden;
 }
 
-body.is-ready .page-shell {
+html.js body.is-ready .page-shell {
   opacity: 1;
 }
 
 .page-shell {
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.8s var(--ease-out-expo);
+}
+
+html.js body.is-loading .page-shell {
+  opacity: 0;
 }
 
 ::selection {
@@ -498,6 +502,26 @@ section[id] {
   color: var(--color-text-muted);
 }
 
+.about-photo {
+  overflow: hidden;
+  min-height: 20rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(0.07) saturate(0.88) contrast(1.05) brightness(1.02);
+}
+
+@media (min-width: 1024px) {
+  .about-photo {
+    grid-column: 2;
+  }
+}
+
 .about-list {
   display: grid;
   gap: 0.875rem;
@@ -776,6 +800,36 @@ section[id] {
   font-family: var(--font-serif);
   font-size: 1.625rem;
   color: var(--color-accent);
+}
+
+.pricing-meta {
+  display: grid;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.pricing-card--featured .pricing-meta {
+  border-color: rgba(250, 248, 245, 0.12);
+}
+
+.pricing-meta p {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.pricing-card--featured .pricing-meta p {
+  color: rgba(250, 248, 245, 0.62);
+}
+
+.pricing-meta span {
+  color: var(--color-text);
+}
+
+.pricing-card--featured .pricing-meta span {
+  color: rgba(250, 248, 245, 0.82);
 }
 
 .pricing-card ul {
@@ -1305,6 +1359,34 @@ section[id] {
   color: rgba(250, 248, 245, 0.42);
 }
 
+.package-row {
+  padding: 1rem;
+  border: 1px solid rgba(250, 248, 245, 0.1);
+}
+
+.package-note {
+  margin-top: 0;
+}
+
+.package-clear {
+  margin-left: 0.4rem;
+  color: var(--color-bg);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.form-email-link {
+  display: inline-flex;
+  margin-top: 1.25rem;
+  font-size: 0.75rem;
+  color: rgba(250, 248, 245, 0.56);
+  transition: color 0.35s ease;
+}
+
+.form-email-link:hover {
+  color: var(--color-bg);
+}
+
 /* ── Testimonials ── */
 
 .testimonials-grid {
@@ -1372,8 +1454,7 @@ section[id] {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.45s var(--ease-out-expo),
-              visibility 0.45s var(--ease-out-expo);
+  transition: opacity 0.45s var(--ease-out-expo);
 }
 
 .portfolio-modal.is-open {
@@ -1478,6 +1559,15 @@ section[id] {
   letter-spacing: 0.04em;
 }
 
+.site-footer-credit {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(250, 248, 245, 0.05);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: rgba(250, 248, 245, 0.22);
+}
+
 /* ── Mobile menu ── */
 
 #mobile-menu {
@@ -1510,36 +1600,56 @@ section[id] {
 /* ── Scroll reveal ── */
 
 .reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-fade {
+  opacity: 1;
+}
+
+.reveal-scale {
+  opacity: 1;
+  transform: scale(1);
+}
+
+html.reveal-enabled .reveal {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 1.1s var(--ease-out-expo),
               transform 1.1s var(--ease-out-expo);
 }
 
-.reveal.is-visible {
+html.reveal-enabled .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.reveal-fade {
+html.reveal-enabled .reveal-fade {
   opacity: 0;
   transition: opacity 1.4s var(--ease-out-expo);
 }
 
-.reveal-fade.is-visible {
+html.reveal-enabled .reveal-fade.is-visible {
   opacity: 1;
 }
 
-.reveal-scale {
+html.reveal-enabled .reveal-scale {
   opacity: 0;
   transform: scale(0.96);
   transition: opacity 1.2s var(--ease-out-expo),
               transform 1.2s var(--ease-out-expo);
 }
 
-.reveal-scale.is-visible {
+html.reveal-enabled .reveal-scale.is-visible {
   opacity: 1;
   transform: scale(1);
+}
+
+html:not(.js) #mobile-menu.hidden {
+  display: block !important;
+  max-height: none;
+  opacity: 1;
 }
 
 .reveal-delay-1 { transition-delay: 0.1s; }
@@ -1563,7 +1673,10 @@ section[id] {
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .reveal-fade,
-  .reveal-scale {
+  .reveal-scale,
+  html.reveal-enabled .reveal,
+  html.reveal-enabled .reveal-fade,
+  html.reveal-enabled .reveal-scale {
     opacity: 1;
     transform: none;
     transition: none;

@@ -5,6 +5,8 @@
 (function () {
   'use strict';
 
+  document.documentElement.classList.add('js');
+
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
   const menuIconOpen = document.getElementById('menu-icon-open');
@@ -15,9 +17,143 @@
   const sections = document.querySelectorAll('section[id]');
   const bookingForm = document.getElementById('booking');
   const bookingStatus = document.getElementById('booking-status');
-  const instagramLink = document.getElementById('instagram-link');
+  const selectedPackageInput = document.getElementById('selected-package');
+  const packageSelect = document.getElementById('package-select');
+  const packageNote = document.getElementById('selected-package-note');
+  const packageLabel = document.querySelector('[data-selected-package-label]');
+  const clearPackageButton = document.querySelector('[data-clear-package]');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const siteConfig = window.ALMA_PHOTO_CONFIG || {};
+
+  const whatsappScenarios = {
+    general: siteConfig.defaultWhatsappMessage || 'Здравствуйте! Хочу записаться на фотосессию.',
+    portrait: 'Здравствуйте! Интересует портретная съёмка.',
+    портрет: 'Здравствуйте! Интересует портретная съёмка.',
+    family: 'Здравствуйте! Интересует семейная съёмка.',
+    'семейная съёмка': 'Здравствуйте! Интересует семейная съёмка.',
+    love: 'Здравствуйте! Интересует Love Story.',
+    'love story': 'Здравствуйте! Интересует Love Story.',
+    content: 'Здравствуйте! Интересует контент-съёмка для бизнеса или соцсетей.',
+    'контент для бизнеса': 'Здравствуйте! Интересует контент-съёмка для бизнеса или соцсетей.',
+    light: 'Здравствуйте! Хочу забронировать пакет Light.',
+    story: 'Здравствуйте! Хочу забронировать пакет Story.',
+    fullDay: 'Здравствуйте! Хочу обсудить пакет Full Day.',
+  };
+
+  function getConfigValue(key) {
+    return typeof siteConfig[key] === 'string' ? siteConfig[key].trim() : '';
+  }
+
+  function getWhatsappNumber() {
+    return getConfigValue('whatsappNumber') || getConfigValue('phoneE164');
+  }
+
+  function toWhatsappContextKey(value) {
+    return String(value || '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase()
+      .replace('full day', 'fullDay');
+  }
+
+  function getWhatsappMessage(context) {
+    const key = toWhatsappContextKey(context);
+    return whatsappScenarios[key] || whatsappScenarios.general;
+  }
+
+  function buildWhatsappUrl(message) {
+    const number = getWhatsappNumber();
+    if (!number) return '#';
+
+    return `https://wa.me/${number}?text=${encodeURIComponent(message || whatsappScenarios.general)}`;
+  }
+
+  function setElementVisibility(element, visible) {
+    if (!element) return;
+    element.hidden = !visible;
+  }
+
+  function syncSelectedPackage(packageName) {
+    const value = String(packageName || '').trim();
+
+    if (selectedPackageInput) selectedPackageInput.value = value;
+    if (packageSelect) packageSelect.value = value;
+    if (packageLabel) packageLabel.textContent = value;
+    setElementVisibility(packageNote, Boolean(value));
+  }
+
+  function updateConfigDrivenContent() {
+    const photographerName = getConfigValue('photographerName');
+    const phoneDisplay = getConfigValue('phoneDisplay');
+    const phoneE164 = getConfigValue('phoneE164');
+    const telegramUsername = getConfigValue('telegramUsername');
+    const instagramUrl = getConfigValue('instagramUrl');
+    const email = getConfigValue('email');
+    const aboutImageSrc = getConfigValue('aboutImageSrc');
+    const aboutImageAlt = getConfigValue('aboutImageAlt');
+
+    document.querySelectorAll('[data-photographer-name]').forEach((element) => {
+      if (photographerName) element.textContent = photographerName;
+    });
+
+    document.querySelectorAll('[data-phone-display]').forEach((element) => {
+      if (phoneDisplay) element.textContent = phoneDisplay;
+    });
+
+    document.querySelectorAll('[data-phone-link]').forEach((link) => {
+      if (phoneE164) {
+        link.href = `tel:+${phoneE164}`;
+      } else {
+        link.hidden = true;
+      }
+    });
+
+    document.querySelectorAll('[data-whatsapp-link]').forEach((link) => {
+      const context = link.getAttribute('data-whatsapp-context') || 'general';
+      const href = buildWhatsappUrl(getWhatsappMessage(context));
+      link.href = href;
+      if (href === '#') link.hidden = true;
+    });
+
+    document.querySelectorAll('[data-telegram-link]').forEach((link) => {
+      if (telegramUsername) {
+        link.href = `https://t.me/${telegramUsername}`;
+      } else {
+        link.hidden = true;
+      }
+    });
+
+    document.querySelectorAll('[data-instagram-link]').forEach((link) => {
+      if (instagramUrl) {
+        link.href = instagramUrl;
+      } else {
+        link.hidden = true;
+      }
+    });
+
+    document.querySelectorAll('[data-email-link]').forEach((link) => {
+      if (email) {
+        link.href = `mailto:${email}`;
+        link.hidden = false;
+      } else {
+        link.hidden = true;
+      }
+    });
+
+    document.querySelectorAll('[data-email-display]').forEach((element) => {
+      if (email) element.textContent = email;
+    });
+
+    const aboutImage = document.querySelector('[data-about-image]');
+    const aboutImageElement = document.querySelector('[data-about-image-src]');
+    if (aboutImage && aboutImageElement && aboutImageSrc) {
+      aboutImageElement.src = aboutImageSrc;
+      aboutImageElement.alt = aboutImageAlt || photographerName || '';
+      aboutImage.hidden = false;
+    }
+  }
+
+  updateConfigDrivenContent();
 
   /* ── Page Load ── */
 
@@ -71,6 +207,8 @@
   const animatedElements = document.querySelectorAll('.reveal, .reveal-fade, .reveal-scale');
 
   if (animatedElements.length && !prefersReducedMotion) {
+    document.documentElement.classList.add('reveal-enabled');
+
     const revealObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -154,34 +292,67 @@
       const name = String(formData.get('name') || '').trim();
       const contact = String(formData.get('contact') || '').trim();
       const type = String(formData.get('type') || '').trim();
+      const packageName = String(formData.get('package') || '').trim();
       const message = String(formData.get('message') || '').trim();
 
       const text = [
-        'Здравствуйте! Хочу записаться на фотосессию.',
+        packageName ? getWhatsappMessage(packageName) : getWhatsappMessage(type),
         name ? `Имя: ${name}` : '',
         contact ? `Контакт: ${contact}` : '',
         type ? `Формат: ${type}` : '',
+        packageName ? `Пакет: ${packageName}` : '',
         message ? `Комментарий: ${message}` : '',
       ].filter(Boolean).join('\n');
 
-      if (bookingStatus) {
-        bookingStatus.textContent = 'Открываю WhatsApp с подготовленным сообщением...';
+      try {
+        const openedWindow = window.open(buildWhatsappUrl(text), '_blank');
+        if (openedWindow) {
+          openedWindow.opener = null;
+          if (bookingStatus) {
+            bookingStatus.textContent = 'WhatsApp открывается с подготовленным сообщением.';
+          }
+          bookingForm.reset();
+          syncSelectedPackage('');
+        } else if (bookingStatus) {
+          bookingStatus.textContent = 'Похоже, всплывающее окно заблокировано браузером. Разрешите всплывающие окна или напишите через кнопку WhatsApp.';
+        }
+      } catch (error) {
+        if (bookingStatus) {
+          bookingStatus.textContent = 'Не получилось открыть WhatsApp автоматически. Напишите через кнопку WhatsApp.';
+        }
       }
-
-      window.open(`https://wa.me/77000000000?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
-      bookingForm.reset();
     });
   }
 
-  /* ── Project Config Links ── */
+  document.querySelectorAll('[data-package]').forEach((link) => {
+    link.addEventListener('click', () => {
+      syncSelectedPackage(link.getAttribute('data-package'));
+    });
+  });
 
-  if (instagramLink && siteConfig.instagramUrl) {
-    instagramLink.href = siteConfig.instagramUrl;
+  if (packageSelect) {
+    packageSelect.addEventListener('change', () => {
+      syncSelectedPackage(packageSelect.value);
+    });
+  }
+
+  if (clearPackageButton) {
+    clearPackageButton.addEventListener('click', () => {
+      syncSelectedPackage('');
+      if (packageSelect) packageSelect.focus();
+    });
   }
 
   /* ── FAQ Accordion ── */
 
   const faqQuestions = document.querySelectorAll('.faq-question');
+
+  faqQuestions.forEach((question) => {
+    const answerId = question.getAttribute('aria-controls');
+    const answer = answerId ? document.getElementById(answerId) : null;
+    question.setAttribute('aria-expanded', 'false');
+    if (answer) answer.hidden = true;
+  });
 
   faqQuestions.forEach((question) => {
     question.addEventListener('click', () => {
@@ -252,7 +423,7 @@
   function openPortfolioModal(index) {
     if (!portfolioModal || !portfolioGallery.length) return;
 
-    lastFocusedElement = document.activeElement;
+    lastFocusedElement = portfolioGallery[index] ? portfolioGallery[index].item : document.activeElement;
     previousBodyOverflow = document.body.style.overflow;
     renderPortfolioModal(index);
     portfolioModal.classList.add('is-open');
@@ -270,6 +441,13 @@
     if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
       lastFocusedElement.focus();
     }
+  }
+
+  function getModalFocusableElements() {
+    if (!portfolioModal) return [];
+
+    return Array.from(portfolioModal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+      .filter((element) => !element.hidden && !element.disabled);
   }
 
   function showAdjacentPortfolio(direction) {
@@ -311,15 +489,34 @@
     if (!portfolioModal || !portfolioModal.classList.contains('is-open')) return;
 
     if (e.key === 'Escape') {
+      e.preventDefault();
       closePortfolioModal();
     }
 
     if (e.key === 'ArrowLeft') {
+      e.preventDefault();
       showAdjacentPortfolio(-1);
     }
 
     if (e.key === 'ArrowRight') {
+      e.preventDefault();
       showAdjacentPortfolio(1);
+    }
+
+    if (e.key === 'Tab') {
+      const focusableElements = getModalFocusableElements();
+      if (!focusableElements.length) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      } else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
     }
   });
 
