@@ -13,6 +13,8 @@
   const header = document.querySelector('.site-header');
   const navLinks = document.querySelectorAll('.nav-link');
   const sections = document.querySelectorAll('section[id]');
+  const bookingForm = document.getElementById('booking');
+  const bookingStatus = document.getElementById('booking-status');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ── Page Load ── */
@@ -139,6 +141,35 @@
       target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
     });
   });
+
+  /* ── Booking Form ── */
+
+  if (bookingForm) {
+    bookingForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(bookingForm);
+      const name = String(formData.get('name') || '').trim();
+      const contact = String(formData.get('contact') || '').trim();
+      const type = String(formData.get('type') || '').trim();
+      const message = String(formData.get('message') || '').trim();
+
+      const text = [
+        'Здравствуйте! Хочу записаться на фотосессию.',
+        name ? `Имя: ${name}` : '',
+        contact ? `Контакт: ${contact}` : '',
+        type ? `Формат: ${type}` : '',
+        message ? `Комментарий: ${message}` : '',
+      ].filter(Boolean).join('\n');
+
+      if (bookingStatus) {
+        bookingStatus.textContent = 'Открываю WhatsApp с подготовленным сообщением...';
+      }
+
+      window.open(`https://wa.me/77000000000?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+      bookingForm.reset();
+    });
+  }
 
   /* ── Portfolio Touch / Hover ── */
 
